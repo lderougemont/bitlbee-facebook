@@ -2170,6 +2170,8 @@ fb_api_attach(FbApi *api, FbId aid, const gchar *msgid, FbApiMessage *msg)
     FbHttpRequest *req;
     FbHttpValues *prms;
 
+    sleep(1);
+
     prms = fb_http_values_new();
     fb_http_values_set_str(prms, "mid", msgid);
     fb_http_values_set_strf(prms, "aid", "%" FB_ID_FORMAT, aid);
