@@ -724,7 +724,7 @@ fb_api_json_chk(FbApi *api, gconstpointer data, gssize size, JsonNode **node)
         arr = fb_json_node_get_arr(root, "$.request_args", NULL);
         elms = json_array_get_elements(arr);
 
-        FbId aid = 0;
+        FbId aid = 0, uid = api->priv->uid, tid = 0;
         const gchar *mid = NULL;
         JsonNode *obj;
         for (l = elms; l != NULL; l = l->next) {
@@ -737,6 +737,14 @@ fb_api_json_chk(FbApi *api, gconstpointer data, gssize size, JsonNode **node)
                     if ((obj = json_object_get_member(o, "value")))
                         aid = g_ascii_strtoll(json_node_get_string(obj), NULL, 10);
 
+                if (g_strcmp0(key, "uid") == 0)
+                    if ((obj = json_object_get_member(o, "value")))
+                        uid = g_ascii_strtoll(json_node_get_string(obj), NULL, 10);
+
+                if (g_strcmp0(key, "tid") == 0)
+                    if ((obj = json_object_get_member(o, "value")))
+                        tid = g_ascii_strtoll(json_node_get_string(obj), NULL, 10);
+
                 if (g_strcmp0(key, "mid") == 0)
                     if ((obj = json_object_get_member(o, "value")))
                         mid = json_node_get_string(obj);
@@ -746,7 +754,8 @@ fb_api_json_chk(FbApi *api, gconstpointer data, gssize size, JsonNode **node)
 
         if (aid != 0 && mid != NULL) {
             FbApiMessage *msg = fb_api_message_dup(NULL, FALSE);
-            msg->uid = api->priv->uid;
+            msg->uid = uid;
+            msg->tid = tid;
             sleep(1);
             fb_api_attach(api, aid, mid, msg);
         }
@@ -2206,6 +2215,8 @@ fb_api_attach(FbApi *api, FbId aid, const gchar *msgid, FbApiMessage *msg)
     prms = fb_http_values_new();
     fb_http_values_set_str(prms, "mid", msgid);
     fb_http_values_set_strf(prms, "aid", "%" FB_ID_FORMAT, aid);
+    fb_http_values_set_strf(prms, "uid", "%" FB_ID_FORMAT, msg->uid);
+    fb_http_values_set_strf(prms, "tid", "%" FB_ID_FORMAT, msg->tid);
 
     req = fb_api_http_req(api, FB_API_URL_ATTACH, "getAttachment",
                           "messaging.getAttachment", prms,
