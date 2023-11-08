@@ -1174,7 +1174,7 @@ fb_cmd_fbcreate(irc_t *irc, char **args)
 
         if (iu != NULL) {
             uid = FB_ID_FROM_STR(iu->bu->handle);
-            duid = g_memdup(&uid, sizeof uid);
+            duid = g_memdup2(&uid, sizeof uid);
             uids = g_slist_prepend(uids, duid);
         }
     }
@@ -1264,7 +1264,7 @@ init_plugin(void)
     g_type_init();
 #endif
 
-    dpp = g_memdup(&pp, sizeof pp);
+    dpp = g_memdup2(&pp, sizeof pp);
     register_protocol(dpp);
 
     root_command_add("fbchats", 0, fb_cmd_fbchats, 0);
