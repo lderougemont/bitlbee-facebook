@@ -19,3 +19,4 @@ lt*.m4
 Makefile
 Makefile.in
 configure~
+.vscode

@@ -665,6 +665,8 @@ fb_api_json_chk(FbApi *api, gconstpointer data, gssize size, JsonNode **node)
     gint64 code;
     guint i;
     JsonNode *root;
+    JsonArray *arr;
+    GList *elms, *l;
 
     static const gchar *exprs[] = {
         "$.error.message",
@@ -717,6 +719,37 @@ fb_api_json_chk(FbApi *api, gconstpointer data, gssize size, JsonNode **node)
     if (code == 509) {
         errc = FB_API_ERROR_NONFATAL;
         success = FALSE;
+        fb_util_debug_info("509");
+
+        arr = fb_json_node_get_arr(root, "$.request_args", NULL);
+        elms = json_array_get_elements(arr);
+
+        FbId aid = 0;
+        gchar *mid = NULL;
+        JsonNode *obj;
+        for (l = elms; l != NULL; l = l->next) {
+            JsonObject *o = json_node_get_object(l->data);
+
+            if ((obj = json_object_get_member(o, "key"))) {
+                const gchar *key = json_node_get_string(obj);
+
+                if (g_strcmp0(key, "aid") == 0)
+                    if ((obj = json_object_get_member(o, "value")))
+                        aid = g_ascii_strtoll(json_node_get_string(obj), NULL, 10);
+
+                if (g_strcmp0(key, "mid") == 0)
+                    if ((obj = json_object_get_member(o, "value")))
+                        mid = json_node_get_string(obj);
+            }
+
+        }
+
+        if (aid != 0 && mid != NULL) {
+            FbApiMessage *msg = fb_api_message_dup(NULL, FALSE);
+            msg->uid = api->priv->uid;
+            sleep(0.5);
+            fb_api_attach(api, aid, mid, msg);
+        }
     }
 
     str = fb_json_values_next_str(values, NULL);
@@ -2169,8 +2202,6 @@ fb_api_attach(FbApi *api, FbId aid, const gchar *msgid, FbApiMessage *msg)
 {
     FbHttpRequest *req;
     FbHttpValues *prms;
-
-    sleep(1);
 
     prms = fb_http_values_new();
     fb_http_values_set_str(prms, "mid", msgid);
