@@ -747,7 +747,7 @@ fb_api_json_chk(FbApi *api, gconstpointer data, gssize size, JsonNode **node)
         if (aid != 0 && mid != NULL) {
             FbApiMessage *msg = fb_api_message_dup(NULL, FALSE);
             msg->uid = api->priv->uid;
-            sleep(0.5);
+            sleep(1);
             fb_api_attach(api, aid, mid, msg);
         }
     }
