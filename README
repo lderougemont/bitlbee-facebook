@@ -1,3 +1,22 @@
+## Purpose of this fork
+
+The main purpose of this fork is to solve the issues related to the error `Error: Invalid attachment id (509)`,
+caused by facebook giving the attachment id faster than the time it tke to actually save the file in its database...
+
+Two solutions are provided:
+- *Solution 1*: wait 1s before asking for the link (if another error 509 occurs, the file/message is lost)
+- *Solution 2*: if 509, reask every 1s for the link
+
+For the moment, solution 2 is the one on the master branch.
+
+***Note:*** there are two versions of each branch, one with the old g_memdump and one with the new g_memdump2. Choose based on your installation steps failling or not.
+
+## Installation
+
+Follow the manual installation steps futher down this README.
+
+## Back to the original README
+
 The Facebook protocol plugin for bitlbee. This plugin uses the Facebook
 Messenger MQTT-based protocol.
 
