@@ -3589,7 +3589,7 @@ fb_api_event_dup(const FbApiEvent *event, gboolean deep)
         return g_new0(FbApiEvent, 1);
     }
 
-    ret = g_memdup(event, sizeof *event);
+    ret = g_memdup2(event, sizeof *event);
 
     if (deep) {
         ret->text = g_strdup(event->text);
@@ -3628,7 +3628,7 @@ fb_api_message_dup(const FbApiMessage *msg, gboolean deep)
         return g_new0(FbApiMessage, 1);
     }
 
-    ret = g_memdup(msg, sizeof *msg);
+    ret = g_memdup2(msg, sizeof *msg);
 
     if (deep) {
         ret->text = g_strdup(msg->text);
@@ -3665,7 +3665,7 @@ fb_api_presence_dup(const FbApiPresence *pres)
         return g_new0(FbApiPresence, 1);
     }
 
-    return g_memdup(pres, sizeof *pres);
+    return g_memdup2(pres, sizeof *pres);
 }
 
 void
@@ -3694,7 +3694,7 @@ fb_api_thread_dup(const FbApiThread *thrd, gboolean deep)
         return g_new0(FbApiThread, 1);
     }
 
-    ret = g_memdup(thrd, sizeof *thrd);
+    ret = g_memdup2(thrd, sizeof *thrd);
 
     if (deep) {
         for (ret->users = NULL, l = thrd->users; l != NULL; l = l->next) {
@@ -3739,7 +3739,7 @@ fb_api_typing_dup(const FbApiTyping *typg)
         return g_new0(FbApiTyping, 1);
     }
 
-    return g_memdup(typg, sizeof *typg);
+    return g_memdup2(typg, sizeof *typg);
 }
 
 void
@@ -3766,7 +3766,7 @@ fb_api_user_dup(const FbApiUser *user, gboolean deep)
         return g_new0(FbApiUser, 1);
     }
 
-    ret = g_memdup(user, sizeof *user);
+    ret = g_memdup2(user, sizeof *user);
 
     if (deep) {
         ret->name = g_strdup(user->name);
