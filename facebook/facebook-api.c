@@ -741,7 +741,7 @@ fb_api_json_chk(FbApi *api, gconstpointer data, gssize size, JsonNode **node)
                     if ((obj = json_object_get_member(o, "value")))
                         uid = g_ascii_strtoll(json_node_get_string(obj), NULL, 10);
 
-                if (g_strcmp0(key, "tid") == 0)
+                if (g_strcmp0(key, "oid") == 0) // cheating with "oid" instead of "tid"
                     if ((obj = json_object_get_member(o, "value")))
                         tid = g_ascii_strtoll(json_node_get_string(obj), NULL, 10);
 
@@ -2216,7 +2216,7 @@ fb_api_attach(FbApi *api, FbId aid, const gchar *msgid, FbApiMessage *msg)
     fb_http_values_set_str(prms, "mid", msgid);
     fb_http_values_set_strf(prms, "aid", "%" FB_ID_FORMAT, aid);
     fb_http_values_set_strf(prms, "uid", "%" FB_ID_FORMAT, msg->uid);
-    fb_http_values_set_strf(prms, "tid", "%" FB_ID_FORMAT, msg->tid);
+    fb_http_values_set_strf(prms, "oid", "%" FB_ID_FORMAT, msg->tid); // cheating with "oid" instead of "tid"
 
     req = fb_api_http_req(api, FB_API_URL_ATTACH, "getAttachment",
                           "messaging.getAttachment", prms,
