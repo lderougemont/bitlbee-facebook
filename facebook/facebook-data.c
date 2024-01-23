@@ -254,7 +254,7 @@ fb_data_add_thread_head(FbData *fata, FbId tid)
     g_return_if_fail(FB_IS_DATA(fata));
     priv = fata->priv;
 
-    dtid = g_memdup2(&tid, sizeof tid);
+    dtid = G_MEMDUP(&tid, sizeof tid);
     g_queue_push_head(priv->tids, dtid);
 }
 
@@ -267,7 +267,7 @@ fb_data_add_thread_tail(FbData *fata, FbId tid)
     g_return_if_fail(FB_IS_DATA(fata));
     priv = fata->priv;
 
-    dtid = g_memdup2(&tid, sizeof tid);
+    dtid = G_MEMDUP(&tid, sizeof tid);
     g_queue_push_tail(priv->tids, dtid);
 }
 
