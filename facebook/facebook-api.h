@@ -32,6 +32,12 @@
 #include "facebook-id.h"
 #include "facebook-mqtt.h"
 
+#if GLIB_VERSION_CUR_STABLE >= GLIB_VERSION_2_68
+#define G_MEMDUP g_memdup2
+#else
+#define G_MEMDUP g_memdup
+#endif
+
 #define FB_TYPE_API  (fb_api_get_type())
 #define FB_API(obj)  (G_TYPE_CHECK_INSTANCE_CAST((obj), FB_TYPE_API, FbApi))
 #define FB_API_CLASS(klass)  (G_TYPE_CHECK_CLASS_CAST((klass), FB_TYPE_API, FbApiClass))
