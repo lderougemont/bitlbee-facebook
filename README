@@ -9,8 +9,6 @@ Two solutions are provided:
 
 For the moment, solution 2 is the one on the master branch.
 
-***Note:*** there are two versions of each branch, one with the old g_memdump and one with the new g_memdump2. Choose based on your installation steps failling or not.
-
 ## Installation
 
 Follow the manual installation steps futher down this README.
